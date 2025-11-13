@@ -1,0 +1,7 @@
+{
+  "name": "Find Your Barber",
+  "description": "Discover top-rated barber shops near you using your current location. Get details, ratings, and directions powered by Google.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
