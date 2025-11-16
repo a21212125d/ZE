@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { findNearbyBarbers } from './services/geminiService';
 import { BarberShop, LatLng } from './types';
@@ -7,6 +6,7 @@ import BarberShopCard from './components/BarberShopCard';
 import Spinner from './components/Spinner';
 import ErrorDisplay from './components/ErrorDisplay';
 import RatingFilter from './components/RatingFilter';
+import PromptDisplay from './components/PromptDisplay';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,12 +18,14 @@ const App: React.FC = () => {
   
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [lastQuery, setLastQuery] = useState<LatLng | string | null>(null);
+  const [promptText, setPromptText] = useState<string>('');
 
   const handleFetchBarbers = useCallback(async (query: LatLng | string, rating: number | null) => {
     setIsLoading(true);
     setError(null);
     setBarberShops([]);
     setSummary('');
+    setPromptText('');
     setHasSearched(true);
     setLastQuery(query);
     
@@ -31,6 +33,7 @@ const App: React.FC = () => {
       const result = await findNearbyBarbers(query, rating);
       setSummary(result.summary);
       setBarberShops(result.shops);
+      setPromptText(result.prompt);
     } catch (e: any) {
       setError(e.message || "An unexpected error occurred.");
     } finally {
@@ -151,6 +154,8 @@ const App: React.FC = () => {
           {hasSearched && !isLoading && !error && (
             <div>
               {summary && <p className="text-center text-lg text-gray-300 mb-8 max-w-3xl mx-auto">{summary}</p>}
+
+              {promptText && <PromptDisplay prompt={promptText} />}
               
               <RatingFilter selectedRating={ratingFilter} onRatingChange={handleRatingChange} />
 

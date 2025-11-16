@@ -3,7 +3,7 @@ import { BarberShop, GroundingChunk, LatLng } from "../types";
 
 type LocationQuery = LatLng | string;
 
-export const findNearbyBarbers = async (location: LocationQuery, minRating: number | null): Promise<{ summary: string; shops: BarberShop[] }> => {
+export const findNearbyBarbers = async (location: LocationQuery, minRating: number | null): Promise<{ summary: string; shops: BarberShop[]; prompt: string }> => {
   if (!process.env.API_KEY) {
     throw new Error("API key is missing. Please set the API_KEY environment variable.");
   }
@@ -51,7 +51,7 @@ export const findNearbyBarbers = async (location: LocationQuery, minRating: numb
         uri: chunk.maps.uri,
       }));
 
-    return { summary, shops };
+    return { summary, shops, prompt };
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     throw new Error("Failed to fetch barber shops. The API may be unavailable or the request failed.");
