@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { findNearbyBarbers } from './services/geminiService';
 import { BarberShop, LatLng } from './types';
